@@ -94,7 +94,7 @@ def isSafeFun(sLine:list[str]):
 
 
 def doPart2():
-    filename = "input.dat"
+    filename = "example.dat"
     if len(sys.argv) > 1:
         filename = sys.argv[1]
 
