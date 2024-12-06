@@ -52,7 +52,7 @@ std::set<std::array<int,2>> doPart1(const char* filename) // 4665
         if (! (0 <= nr && nr < R && 0 <= nc && nc < C)) {
             break;
         }
-        if (data[nr].c_str()[nc] == '#') {
+        if (data[nr][nc] == '#') {
             curDir = (curDir+1)%4;
         } else {
             cr = nr;
@@ -109,7 +109,7 @@ void doPart2(const char* filename, std::set<std::array<int,2>>& SEEN) // 1688
             if (! (0 <= nr && nr < R && 0 <= nc && nc < C)) {
                 break;
             }
-            if (data[nr].c_str()[nc] == '#' || (nr == ob_r && nc == ob_c)) {
+            if (data[nr][nc] == '#' || (nr == ob_r && nc == ob_c)) {
                 curDir = (curDir+1)%4;
             } else {
                 cr = nr;
