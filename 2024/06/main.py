@@ -78,14 +78,9 @@ def doPart2Again():
 
     # Lets use sets this time so I don't have to update the grid...
     PATH_RC = set()
-    LOOP_RC = set()
 
     # "kinda" same as last time
     while True:
-        if (cr,cc,curDir) in LOOP_RC:
-            numLoops += 1
-            break
-        LOOP_RC.add((cr,cc,curDir))
         PATH_RC.add((cr,cc))
 
         nr = cr+DIR[curDir][0]
@@ -124,8 +119,6 @@ def doPart2Again():
             nc = cc+DIR[curDir][1]
 
             if not (0 <= nr < R and 0 <= nc < C):
-                if data[ob_r][ob_c]=="#":
-                    numPath = len(PATH_RC) # We can still get the part one answer...
                 break
             if data[nr][nc] == "#" or (nr == ob_r and nc == ob_c):
                 curDir = (curDir+1)%4
