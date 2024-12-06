@@ -91,18 +91,21 @@ void doPart2(const char* filename, std::set<std::array<int,2>>& SEEN) // 1688
     for (auto prc : SEEN) {
         const int ob_r = prc[0];
         const int ob_c = prc[1];
+        if (ob_r == sr && ob_c == sc) continue;
         int cr = sr;
         int cc = sc;
         int curDir = 0;
 
-        std::set<std::array<int,3>> LOOP_RC;
+        std::vector<bool> LOOP_RC(R*C*4,false);
 
         while (true) {
-            if (LOOP_RC.find(std::array<int,3>{cr,cc,curDir})!=LOOP_RC.end()) {
+            const int hash = 4*(cr*R+cc) + curDir;
+            if (LOOP_RC[hash]) {
                 numLoops +=1;
                 break;
             }
-            LOOP_RC.insert(std::array<int,3>{cr,cc,curDir});
+            LOOP_RC[hash] = true;
+
             const int nr = cr + DIR[curDir][0];
             const int nc = cc + DIR[curDir][1];
 
