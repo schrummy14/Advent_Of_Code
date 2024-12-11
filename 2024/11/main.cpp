@@ -1,7 +1,5 @@
 
 #include "../helpers/extras.hh"
-#include <array>
-#include <set>
 #include <unordered_map>
 
 unsigned long countStone(
