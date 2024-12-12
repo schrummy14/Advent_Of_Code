@@ -57,18 +57,6 @@ def doPart1():
 
 def doPart2(REGIONS:list[list[tuple[int,int]]]):
 
-    filename = "example.dat"
-    if len(sys.argv) > 1:
-        filename = sys.argv[1]
-
-    GRID = list()
-    with open(filename, "r") as f:
-        for li in f:
-            line = li.strip()
-            if not line:
-                continue
-            GRID.append(line)
-
     ans = 0
     for region in REGIONS:
         if len(region) == 1:
