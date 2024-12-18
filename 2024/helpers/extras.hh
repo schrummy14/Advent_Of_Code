@@ -1,8 +1,28 @@
+#include <array>
 #include <fstream>
 #include <iostream>
+#include <queue>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+
+int DIRS[4][2]={
+    {-1, 0},
+    { 0, 1},
+    { 1, 0},
+    { 0,-1}
+};
+
+template<typename T>
+std::string joinString(const std::vector<T>& v, char join)
+{
+    std::string output = "";
+    for (auto s = v.begin(); s != v.end(); s++) {
+        output += std::to_string(*s);
+        if (s != v.end() -1 ) output += join;
+    }
+    return output;
+}
 
 void stripString(std::string &line)
 {
