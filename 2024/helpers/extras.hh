@@ -24,6 +24,15 @@ std::string joinString(const std::vector<T>& v, char join)
     return output;
 }
 
+bool startsWith(const std::string& str1, const std::string& str2)
+{
+    if (str1.length() < str2.length()) return false;
+    for (size_t k = 0; k < str2.length(); k++) {
+        if (str1[k] != str2[k]) return false;
+    }
+    return true;
+}
+
 void stripString(std::string &line)
 {
     if (line.length() == 0) return; // nothing to do...
