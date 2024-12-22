@@ -28,9 +28,9 @@ void doPart1(std::vector<long>& numbers)
     printf("%ld\n", ans);
 }
 
-std::unordered_map<size_t, long> getSequences(std::vector<long>& prices, std::vector<long>& dp)
+std::unordered_map<int, long> getSequences(std::vector<signed char>& prices, std::vector<signed char>& dp)
 {
-    std::unordered_map<size_t, long> sequences;
+    std::unordered_map<int, long> sequences;
     for (size_t k = 0; k < dp.size()-3; k++) {
         const signed char c1 = dp[k];
         const signed char c2 = dp[k+1];
@@ -48,10 +48,10 @@ std::unordered_map<size_t, long> getSequences(std::vector<long>& prices, std::ve
 
 void doPart2(std::vector<long>& numbers)
 {
-    std::unordered_map<size_t, long> ANS;
+    std::unordered_map<int, long> ANS;
     for (long number : numbers) {
         size_t k = 0;
-        std::vector<long> prices;
+        std::vector<signed char> prices;
         prices.push_back(number%10);
         while (k++ < 2000) {
             number = prune(mix(number, 64*number));
@@ -59,9 +59,9 @@ void doPart2(std::vector<long>& numbers)
             number = prune(mix(number, number*2048));
             prices.push_back(number%10);
         }
-        std::vector<long> dp;
+        std::vector<signed char> dp;
         for (size_t k = 1; k < prices.size(); k++) dp.push_back(prices[k]-prices[k-1]);
-        std::unordered_map<size_t, long> sequences = getSequences(prices, dp);
+        std::unordered_map<int, long> sequences = getSequences(prices, dp);
         for (auto seq : sequences) {
             size_t key = seq.first;
             long v = seq.second;
