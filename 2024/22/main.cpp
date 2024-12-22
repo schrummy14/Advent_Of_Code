@@ -15,7 +15,7 @@ inline long prune(long x)
 
 void doPart1(std::vector<long>& numbers)
 {
-    long ans = 0;
+    size_t ans = 0;
     for (long number : numbers) {
         size_t k = 0;
         while (k++ < 2000) {
@@ -25,12 +25,12 @@ void doPart1(std::vector<long>& numbers)
         }
         ans += number;
     }
-    printf("%ld\n", ans);
+    printf("%lu\n", ans);
 }
 
-std::unordered_map<int, long> getSequences(std::vector<signed char>& prices, std::vector<signed char>& dp)
+std::unordered_map<int, size_t> getSequences(std::vector<signed char>& prices, std::vector<signed char>& dp)
 {
-    std::unordered_map<int, long> sequences;
+    std::unordered_map<int, size_t> sequences;
     for (size_t k = 0; k < dp.size()-3; k++) {
         const signed char c1 = dp[k];
         const signed char c2 = dp[k+1];
@@ -48,7 +48,7 @@ std::unordered_map<int, long> getSequences(std::vector<signed char>& prices, std
 
 void doPart2(std::vector<long>& numbers)
 {
-    std::unordered_map<int, long> ANS;
+    std::unordered_map<int, size_t> ANS;
     for (long number : numbers) {
         size_t k = 0;
         std::vector<signed char> prices;
@@ -61,10 +61,10 @@ void doPart2(std::vector<long>& numbers)
         }
         std::vector<signed char> dp;
         for (size_t k = 1; k < prices.size(); k++) dp.push_back(prices[k]-prices[k-1]);
-        std::unordered_map<int, long> sequences = getSequences(prices, dp);
+        std::unordered_map<int, size_t> sequences = getSequences(prices, dp);
         for (auto seq : sequences) {
             size_t key = seq.first;
-            long v = seq.second;
+            size_t v = seq.second;
             if (ANS.find(key) == ANS.end()) {
                 ANS[key] = v;
             } else {
@@ -72,11 +72,11 @@ void doPart2(std::vector<long>& numbers)
             }
         }
     }
-    long ans = 0;
+    size_t ans = 0;
     for (auto entry : ANS) {
         if (ans < entry.second) ans = entry.second;
     }
-    printf("%ld\n", ans);
+    printf("%lu\n", ans);
 }
 
 int main(int narg, char* args[])
