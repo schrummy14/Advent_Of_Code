@@ -2,6 +2,7 @@
 #include "../helpers/extras.hh"
 
 #include <bits/stdc++.h>
+#include <chrono>
 #include <set>
 #include <unordered_map>
 
@@ -20,16 +21,17 @@ void doPart1(std::unordered_map<short, std::set<short>>& GRAPH)
     std::vector<short> keys = getKeys(GRAPH);
 
     size_t ans = 0;
+    #pragma omp parallel for reduction(+:ans)
     for (size_t k1 = 0; k1 < keys.size(); k1++) {
         const short key1 = keys[k1];
         for (size_t k2 = k1+1; k2 < keys.size(); k2++) {
             const short key2 = keys[k2];
-            if (GRAPH.at(key2).find(key1) == GRAPH.at(key2).end()) continue;
+            if (GRAPH[key2].find(key1) == GRAPH[key2].end()) continue;
             for (size_t k3 = k2+1; k3 < keys.size(); k3++) {
                 const short key3 = keys[k3];
                 if (
-                    GRAPH.at(key3).find(key1) != GRAPH.at(key3).end() &&
-                    GRAPH.at(key3).find(key2) != GRAPH.at(key3).end()
+                    GRAPH[key3].find(key1) != GRAPH[key3].end() &&
+                    GRAPH[key3].find(key2) != GRAPH[key3].end()
                 ) {
                     if (
                         key1/26 == 't'-'a' || key2/26 == 't'-'a' || key3/26 == 't'-'a'
@@ -53,7 +55,7 @@ void doPart2(std::unordered_map<short, std::set<short>>& GRAPH)
         for (auto key : keys) {
             bool ok = true;
             for (auto otherKey : connected) {
-                if (GRAPH.at(otherKey).find(key) == GRAPH.at(otherKey).end()) {
+                if (GRAPH[otherKey].find(key) == GRAPH[otherKey].end()) {
                     ok = false;
                     break;
                 }
@@ -69,8 +71,8 @@ void doPart2(std::unordered_map<short, std::set<short>>& GRAPH)
     std::sort(best.begin(), best.end());
     std::vector<std::string> ans;
     for (auto s : best) {
-        char c1 = s/26 + 'a';
-        char c2 = s%26 + 'a';
+        const char c1 = s/26 + 'a';
+        const char c2 = s%26 + 'a';
         std::string c = "";
         c += c1;
         c += c2;
@@ -95,7 +97,14 @@ int main(int narg, char* args[])
     }
     file.close();
 
+    auto start1 = std::chrono::steady_clock::now();
     doPart1(GRAPH);
+    auto elapsed1 = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start1).count();
+    printf("Part 1 Elapsed Time: %lu us\n", elapsed1);
+    auto start2 = std::chrono::steady_clock::now();
     doPart2(GRAPH);
+    auto elapsed2 = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start2).count();
+    printf("Part 2 Elapsed Time: %lu us\n", elapsed2);
+    printf("Total Elapsed Time: %lu us\n", elapsed1+elapsed2);
     return 0;
 }
