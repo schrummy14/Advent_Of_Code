@@ -24,6 +24,16 @@ std::string joinString(const std::vector<T>& v, char join)
     return output;
 }
 
+std::string joinString(const std::vector<std::string>& v, char join)
+{
+    std::string output = "";
+    for (auto s = v.begin(); s != v.end(); s++) {
+        output += *s;
+        if (s != v.end() -1 ) output += join;
+    }
+    return output;
+}
+
 bool startsWith(const std::string& str1, const std::string& str2)
 {
     if (str1.length() < str2.length()) return false;
