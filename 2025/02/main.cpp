@@ -38,37 +38,39 @@ void doPart1(const char* filename)
     file.close();
 }
 
+bool idIsValidForK(const std::string id, size_t k)
+{
+    if (id.length() % k > 0) return true;
+
+    const int numCopies = id.length() / k;
+    // printf("id = %s, numCopies = %d\n", id.c_str(), numCopies);
+    const std::string s1 = id.substr(0, k);
+    bool isValid = false;
+    for (int m = 1; m < numCopies; m++) {
+        const std::string s2 = id.substr(k*m, k);
+        // std::cout << s1 << ", " << s2 << '\n';
+        if (s1 != s2) isValid |= true;
+    }
+    return isValid;
+}
+
 bool idIsValid_2(const std::string id)
 {
-    // Not valid...
-    // fails for 123123123...
     // Need to loop through all possible sub string lengths
-    if (id.length() % 2 == 1) {
-        bool valid = false;
-        for (int k = 1; k < id.length(); k++) {
-            valid |= id[0]!=id[k];
-        }
-        // std::cout << id << " - " << valid << '\n';
-        return valid;
+    for (size_t k = 1; k <= id.length()/2; k++) {
+        if (!idIsValidForK(id, k)) return false;
     }
-    for (int k = 0; k < id.length()/2; k++) {
-
-    }
-    return false;
-    // // All odd length ids are valid
-    // if (id.length() % 2 == 1) return true;
-
-    // // Split the id into two parts and check if they match each other
-    // const std::string s1 = id.substr(0, id.length()/2);
-    // const std::string s2 = id.substr(id.length()/2, id.length());
-    // return s1 != s2;
+    return true;
 }
 
 size_t countInvalidIdsInRange_2(const std::string id_1, const std::string id_2)
 {
     size_t count = 0;
     for (auto k = atol(id_1.c_str()); k <= atol(id_2.c_str()); k++) {
-        if (!idIsValid_2(std::to_string(k))) count += k;
+        if (!idIsValid_2(std::to_string(k))) {
+            // printf("Found Invalid: %zu\n", k);
+            count += k;
+        }
     }
     return count;
 }
