@@ -1,3 +1,5 @@
 **/*.dat
 **/.vscode
 **/a.out
+**/main
+**/*.bak
