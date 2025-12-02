@@ -45,13 +45,14 @@ bool idIsValidForK(const std::string id, size_t k)
     const int numCopies = id.length() / k;
     // printf("id = %s, numCopies = %d\n", id.c_str(), numCopies);
     const std::string s1 = id.substr(0, k);
-    bool isValid = false;
     for (int m = 1; m < numCopies; m++) {
         const std::string s2 = id.substr(k*m, k);
         // std::cout << s1 << ", " << s2 << '\n';
-        if (s1 != s2) isValid |= true;
+        if (s1 != s2) {
+            return true;
+        }
     }
-    return isValid;
+    return false;
 }
 
 bool idIsValid_2(const std::string id)
