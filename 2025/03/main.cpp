@@ -10,11 +10,9 @@ void doPart1(const char* filename)
     while (getline(file, line)) {
         stripString(line);
         if (line.length()==0) continue;
-        // std::cout << line << '\n';
         size_t k1 = 0;
         size_t max_k1 = 0;
         size_t k2 = line.length()-1;
-        // size_t max_k2 = 0;
         size_t maxV[2] = {0};
 
         // Find max in first n-1 digits
@@ -31,12 +29,10 @@ void doPart1(const char* filename)
             const size_t cv = line[k2]-'0';
             if (cv > maxV[1]) {
                 maxV[1] = cv;
-                // max_k2 = k2;
             }
         }
 
         ans += 10*maxV[0] + maxV[1];
-        // printf("%zu%zu %zu\n", maxV[0], maxV[1], ans);
     }
     file.close();
     printf("%zu\n", ans);
@@ -50,7 +46,6 @@ void doPart2(const char* filename)
     while (getline(file, line)) {
         stripString(line);
         if (line.length()==0) continue;
-        std::cout << line << '\n';
         size_t maxV[12] = {0};
         size_t max_k1 = 0;
         for (size_t k = 0; k < 12; k++) {
@@ -66,9 +61,7 @@ void doPart2(const char* filename)
         size_t curAns = 0;
         for (size_t k = 0; k < 12; k++) {
             curAns += maxV[k]*std::pow(10,11-k);
-            printf("%zu", maxV[k]);
         }
-        printf(" %zu\n", curAns);
         ans += curAns;
     }
     file.close();
