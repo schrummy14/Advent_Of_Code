@@ -29,7 +29,9 @@ void doPart1(const char* filename)
     while (getline(file, line)) {
         stripString(line);
         std::vector<std::string> sLine = splitString(line, ",");
-        for (auto val : sLine) {
+        #pragma omp parallel for reduction(+:ans)
+        for (size_t k = 0; k < sLine.size(); k++) {
+            const std::string val = sLine[k];
             std::vector<std::string> ids = splitString(val, "-");
             ans += countInvalidIdsInRange(ids[0], ids[1]);
         }
@@ -84,7 +86,9 @@ void doPart2(const char* filename)
     while (getline(file, line)) {
         stripString(line);
         std::vector<std::string> sLine = splitString(line, ",");
-        for (auto val : sLine) {
+        #pragma omp parallel for reduction(+:ans)
+        for (size_t k = 0; k < sLine.size(); k++) {
+            const std::string val = sLine[k];
             std::vector<std::string> ids = splitString(val, "-");
             ans += countInvalidIdsInRange_2(ids[0], ids[1]);
         }
