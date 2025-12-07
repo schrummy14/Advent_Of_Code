@@ -40,11 +40,52 @@ def doPart2():
     if len(sys.argv) > 1:
         filename = sys.argv[1]
 
+    DATA = []
     with open(filename, "r") as f:
-        for li in f:
-            line = li.strip()
-            if not line:
-                continue
+        for line in f:
+            thisLine = []
+            for char in line:
+                if char == '\n':
+                    continue
+                thisLine.append(char)
+            DATA.append(thisLine)
+
+    cur = 0
+    maxCur = len(DATA[0])
+    ans = 0
+    done = False
+    while not done:
+        # Find next + or *
+        nextCur = cur+1
+        while True:
+            if nextCur == maxCur or DATA[-1][nextCur] != ' ':
+                if nextCur == maxCur:
+                    done = True
+                break
+            nextCur +=1
+        if DATA[-1][cur] == '*':
+            curAns = 1
+        else:
+            curAns = 0
+        k1 = cur
+        if done:
+            k2 = nextCur
+        else:
+            k2 = nextCur - 1
+        for k in range(k1, k2):
+            curVal = ""
+            for i in range(0, len(DATA)-1):
+                curVal += DATA[i][k]
+            # print(curVal)
+            if DATA[-1][cur] == '*':
+                curAns *= int(curVal)
+            else:
+                curAns += int(curVal)
+        cur = nextCur
+        ans += curAns
+    print(ans)
+
+
 
 def main():
     doPart1()
