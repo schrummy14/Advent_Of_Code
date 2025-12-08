@@ -39,9 +39,9 @@ size_t shootRay(size_t r, size_t c, std::vector<std::string>& GRID, std::vector<
     static const size_t R = GRID.size();
     static const size_t C = GRID[0].length();
 
-    if (SEEN[r*C + c] > 0) return SEEN[r*C+c];
-
     if (r == R) return 1;
+
+    if (SEEN[r*C + c] > 0) return SEEN[r*C+c];
 
     size_t ans = 0;
     if (r+1 < R && GRID[r+1][c] == '^'){
@@ -75,12 +75,8 @@ void doPart2(const char* filename)
         }
     }
     GRID[1][curC] = '|';
-    std::vector<size_t> SEEN;
-    for (size_t r = 0; r < R; r++) {
-        for (size_t c = 0; c < C; c++) {
-            SEEN.push_back(0);
-        }
-    }
+
+    std::vector<size_t> SEEN(R*C, 0);
 
     size_t ans = shootRay(1, curC, GRID, SEEN);
     std::cout << "Part 2: " << ans << '\n';
