@@ -98,21 +98,83 @@ void doPart1(const char* filename)
     sort(clusters.begin(), clusters.end(), setComp);
     size_t ans = 1;
     for (size_t k = 0; k < 3; k++) {
-        std::cout << clusters[k].size() << '\n';
+        // std::cout << clusters[k].size() << '\n';
         ans *= clusters[k].size();
     }
-    std::cout << ans << '\n';
+    std::cout << "Part 1: " << ans << '\n';
 }
 
 void doPart2(const char* filename)
 {
     std::ifstream file(filename);
     std::string line;
+    std::vector<std::array<size_t, 3>> positions;
     while (getline(file, line)) {
         stripString(line);
-        std::vector<std::string> sLine = splitString(line, " ");
+        std::vector<std::string> sLine = splitString(line, ",");
+        const size_t v1 = atol(sLine[0].c_str());
+        const size_t v2 = atol(sLine[1].c_str());
+        const size_t v3 = atol(sLine[2].c_str());
+        positions.push_back({v1,v2,v3});
     }
     file.close();
+
+    std::vector<std::array<size_t,3>> values;
+    for (size_t j1 = 0; j1 < positions.size()-1; j1++) {
+        for (size_t j2 = j1+1; j2 < positions.size(); j2++) {
+            const size_t dist2 = getDist2(j1, j2, positions);
+            // printf("%zu, %zu, %zu\n", dist2, j1, j2);
+            values.push_back({dist2, j1, j2});
+        }
+    }
+
+    sort(values.begin(), values.end(), rangeComp);
+
+    size_t connections = 0;
+    std::vector<std::set<size_t>> clusters;
+    for (size_t k1 = 0; k1 < values.size(); k1++) {
+        const size_t id1 = values[k1][1];
+        const size_t id2 = values[k1][2];
+        // Need to loop through clusters and see if we can find
+        bool foundConnection = false;
+        for (size_t k2 = 0; k2 < clusters.size(); k2++) {
+            const bool t1 = clusters[k2].find(id1) != clusters[k2].end();
+            const bool t2 = clusters[k2].find(id2) != clusters[k2].end();
+
+            if (t1 || t2) {
+                foundConnection = true;
+                if (t1 && t2) break; // skip
+                connections++;
+                clusters[k2].insert(id1);
+                clusters[k2].insert(id2);
+
+                while (true) {
+                    bool didMerge = false;
+                    for (size_t k3 = k2+1; k3 < clusters.size(); k3++) {
+                        const bool tt1 = clusters[k3].find(id1) != clusters[k3].end();
+                        const bool tt2 = clusters[k3].find(id2) != clusters[k3].end();
+                        if (tt1 || tt2) {
+                            didMerge = true;
+                            clusters[k2].merge(clusters[k3]);
+                            clusters[k3].clear();
+                            break;
+                        }
+                    }
+                    if (!didMerge) break;
+                }
+                if (clusters[0].size() == positions.size()) {
+                    std::cout << "Part 2: " << positions[id1][0]*positions[id2][0] << '\n';
+                    return;
+                }
+                break;
+            }
+        }
+        if (! foundConnection) {
+            connections++;
+            clusters.push_back({id1, id2});
+        }
+    }
+    std::cout << "uh oh...\n";
 }
 
 int main(int narg, char* args[])
