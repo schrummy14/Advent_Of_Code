@@ -2,20 +2,26 @@
 
 import os
 import sys
-from collections import deque
 
-def findAllPaths(DATA):
-    ans = 0
-    queue = deque(['you'])
-    while len(queue) > 0:
-        cur = queue.pop()
-        if cur == 'out':
-            ans += 1
-            continue
-        newPaths = DATA[cur]
-        for np in newPaths:
-            queue.append(np)
-    return ans
+MEMORY={}
+def dfs(cur:str, hasFFT:bool, hasDAC:bool, DATA:dict[str,list[str]]):
+    if (cur, hasFFT, hasDAC) in MEMORY:
+        return MEMORY[(cur, hasFFT, hasDAC)]
+    if cur == "out":
+        if hasFFT and hasDAC:
+            return 1
+        else:
+            return 0
+    curAns = 0
+    for np in DATA[cur]:
+        curAns += dfs(
+            np,
+            hasFFT or np == "fft",
+            hasDAC or np == "dac",
+            DATA
+        )
+    MEMORY[(cur, hasFFT, hasDAC)] = curAns
+    return curAns
 
 def doPart1():
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -31,7 +37,9 @@ def doPart1():
                 continue
             key, values = line.split(':')
             DATA[key.strip()] = [v.strip() for v in values.strip().split(' ')]
-    ans = findAllPaths(DATA)
+
+    MEMORY.clear()
+    ans = dfs("you", True, True, DATA)
     print("Part 1:", ans)
 
 def doPart2():
@@ -40,11 +48,18 @@ def doPart2():
     if len(sys.argv) > 1:
         filename = sys.argv[1]
 
+    DATA = {}
     with open(filename, "r") as f:
         for li in f:
             line = li.strip()
             if not line:
                 continue
+            key, values = line.split(':')
+            DATA[key.strip()] = [v.strip() for v in values.strip().split(' ')]
+
+    MEMORY.clear()
+    ans = dfs("svr", False, False, DATA)
+    print("Part 2:", ans)
 
 def main():
     doPart1()
