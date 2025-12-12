@@ -59,13 +59,8 @@ void doPart1(const char* filename)
 
 void doPart2(const char* filename)
 {
-    std::ifstream file(filename);
-    std::string line;
-    while (getline(file, line)) {
-        stripString(line);
-        std::vector<std::string> sLine = splitString(line, " ");
-    }
-    file.close();
+    (void) filename;
+    std::cout << "Part 2: (Run main.py as I am not implementing an integer linear program algorithm in c++)" << '\n';
 }
 
 int main(int narg, char* args[])
