@@ -32,7 +32,7 @@ def doPart1():
                 cum += int(d[i])
         ans += cum
 
-    print(ans)
+    print("Part 1:", ans)
 
 def doPart2():
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -83,8 +83,7 @@ def doPart2():
                 curAns += int(curVal)
         cur = nextCur
         ans += curAns
-    print(ans)
-
+    print("Part 2:", ans)
 
 
 def main():
