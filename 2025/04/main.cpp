@@ -1,13 +1,31 @@
 
 #include "../../helpers/extras.hh"
+#include <algorithm>
 
 void printGrid(std::vector<std::string>& GRID)
 {
 #ifdef _SHOW_GRID_
     std::cout << "================================================================================\n";
     for (auto line : GRID) {
+        std::replace(line.begin(), line.end(), 'x','.');
+        std::replace(line.begin(), line.end(), '.',' ');
         std::cout << line << '\n';
     }
+#else
+    (void)GRID;
+#endif
+}
+
+void writeGrid(std::vector<std::string>& GRID, std::string filename)
+{
+#ifdef _SHOW_GRID_
+    std::ofstream file(filename);
+    for (auto line : GRID) {
+        std::replace(line.begin(), line.end(), 'x','.');
+        std::replace(line.begin(), line.end(), '.',' ');
+        file << line << '\n';
+    }
+    file.close();
 #else
     (void)GRID;
 #endif
@@ -61,6 +79,7 @@ void doPart2(const char* filename)
     }
     file.close();
     printGrid(GRID);
+    writeGrid(GRID, "output_0.txt");
     int R = GRID.size();
     int C = GRID[0].length();
     size_t ans = 0;
@@ -93,6 +112,9 @@ void doPart2(const char* filename)
         }
         std::cout << "Iteration " << numIts << ": Removed " << removed << '\n';
         printGrid(GRID);
+        char fileout[255];
+        sprintf(fileout, "output_%zu.txt", numIts);
+        writeGrid(GRID, fileout);
     }
     std::cout << "Part 2: " << ans << '\n';
 }
